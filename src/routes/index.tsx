@@ -1,31 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
+import { HeroBanner } from "@/components/HeroBanner";
 import { Menu } from "@/components/Menu";
 import { CartDrawer } from "@/components/CartDrawer";
 import { DemoBanner } from "@/components/DemoBanner";
 import { Toaster } from "@/components/ui/sonner";
 import { STORE } from "@/data/menu";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/")(({
   head: () => ({
     meta: [
       { title: `${STORE.name} — Cardápio Digital | ${STORE.tagline}` },
-      {
-        name: "description",
-        content: `Cardápio digital premium do ${STORE.name}. Açaí artesanal, milkshakes e adicionais especiais. Site de demonstração.`,
-      },
+      { name: "description", content: `Cardápio digital premium do ${STORE.name}. Açaí artesanal, milkshakes e adicionais especiais.` },
       { property: "og:title", content: `${STORE.name} — Cardápio Digital` },
       { property: "og:description", content: "Experiência premium em delivery de açaí." },
     ],
   }),
   component: Index,
-});
+}));
 
 function Index() {
   return (
     <main className="min-h-screen">
       <DemoBanner />
       <Header />
+      <HeroBanner />
       <Menu />
       <CartDrawer />
       <Toaster position="top-center" theme="dark" />
@@ -34,7 +33,7 @@ function Index() {
           <span className="text-gold">✦</span>
         </div>
         <p className="font-display text-base text-foreground mb-1">{STORE.name}</p>
-        <p>Site de demonstração · Cardápio digital premium</p>
+        <p>Cardápio digital premium</p>
       </footer>
     </main>
   );

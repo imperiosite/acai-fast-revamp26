@@ -5,38 +5,12 @@ import copo700 from "@/assets/copo-700.jpg";
 import copo1kg from "@/assets/copo-1kg.jpg";
 import milkshake from "@/assets/milkshake.jpg";
 
-export type AddOn = {
-  id: string;
-  name: string;
-  price: number;
-};
+export type AddOn = { id: string; name: string; price: number };
+export type AddOnGroup = { id: string; title: string; description?: string; required?: boolean; min?: number; max: number; items: AddOn[] };
+export type MenuItem = { id: string; name: string; description: string; price: number; image: string; badge?: string; groups: AddOnGroup[] };
+export type Category = { id: string; title: string; emoji: string; items: MenuItem[] };
 
-export type AddOnGroup = {
-  id: string;
-  title: string;
-  description?: string;
-  required?: boolean;
-  min?: number;
-  max: number;
-  items: AddOn[];
-};
-
-export type MenuItem = {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  badge?: string;
-  groups: AddOnGroup[];
-};
-
-export type Category = {
-  id: string;
-  title: string;
-  emoji: string;
-  items: MenuItem[];
-};
+// ─── Add-on groups ─────────────────────────────────────────────────────────
 
 const frutasGroup = (max: number, included: number): AddOnGroup => ({
   id: "frutas",
@@ -77,6 +51,7 @@ const premiumGroup: AddOnGroup = {
   max: 5,
   items: [
     { id: "nutella", name: "Nutella", price: 4.0 },
+    { id: "ninho", name: "Creme de Ninho", price: 4.0 },
     { id: "morango-extra", name: "Morango extra", price: 3.0 },
     { id: "oreo", name: "Oreo triturado", price: 3.5 },
     { id: "kitkat", name: "KitKat", price: 4.0 },
@@ -98,50 +73,87 @@ const caldasGroup: AddOnGroup = {
   ],
 };
 
+// ─── Menu items ─────────────────────────────────────────────────────────────
+
+const copos: MenuItem[] = [
+  {
+    id: "copo-300",
+    name: "Copo 300ml",
+    description: "Açaí cremoso + 2 complementos + 1 fruta + 1 calda.",
+    price: 14.0,
+    image: copo300,
+    groups: [frutasGroup(2, 1), complementosGroup(2), caldasGroup, premiumGroup],
+  },
+  {
+    id: "copo-400",
+    name: "Copo 400ml",
+    description: "Açaí cremoso + 3 complementos + 2 frutas + 2 caldas.",
+    price: 16.0,
+    image: copo400,
+    badge: "Mais pedido",
+    groups: [frutasGroup(3, 2), complementosGroup(3), caldasGroup, premiumGroup],
+  },
+  {
+    id: "copo-500",
+    name: "Copo 500ml",
+    description: "Açaí cremoso + 4 complementos + 2 frutas + 2 caldas.",
+    price: 18.0,
+    image: copo500,
+    groups: [frutasGroup(3, 2), complementosGroup(4), caldasGroup, premiumGroup],
+  },
+  {
+    id: "copo-700",
+    name: "Copo 700ml",
+    description: "Pra dividir! Açaí + 5 complementos + 3 frutas + 2 caldas.",
+    price: 22.0,
+    image: copo700,
+    groups: [frutasGroup(4, 3), complementosGroup(5), caldasGroup, premiumGroup],
+  },
+  {
+    id: "copo-1kg",
+    name: "Copo 1KG",
+    description: "Pra família! Açaí + 6 complementos + 4 frutas + 2 caldas.",
+    price: 39.99,
+    image: copo1kg,
+    badge: "Família",
+    groups: [frutasGroup(5, 4), complementosGroup(6), caldasGroup, premiumGroup],
+  },
+];
+
+// ─── Categories ─────────────────────────────────────────────────────────────
+
 export const categories: Category[] = [
+  {
+    id: "mais-pedidos",
+    title: "Mais Pedidos",
+    emoji: "⭐",
+    items: [copos[1], copos[2], copos[4]], // 400ml, 500ml, 1kg
+  },
   {
     id: "copos",
     title: "Escolha seu copo",
-    emoji: "💜",
+    emoji: "🍧",
+    items: copos,
+  },
+  {
+    id: "combos",
+    title: "Combos",
+    emoji: "🥤",
     items: [
       {
-        id: "copo-300",
-        name: "Copo 300ml",
-        description: "Açaí cremoso + 2 complementos + 1 fruta + 1 calda.",
-        price: 14.0,
-        image: copo300,
-        groups: [frutasGroup(2, 1), complementosGroup(2), caldasGroup, premiumGroup],
-      },
-      {
-        id: "copo-400",
-        name: "Copo 400ml",
-        description: "Açaí cremoso + 3 complementos + 2 frutas + 2 caldas.",
-        price: 16.0,
-        image: copo400,
-        badge: "Mais pedido",
-        groups: [frutasGroup(3, 2), complementosGroup(3), caldasGroup, premiumGroup],
-      },
-      {
-        id: "copo-500",
-        name: "Copo 500ml",
-        description: "Açaí cremoso + 4 complementos + 2 frutas + 2 caldas.",
-        price: 18.0,
+        id: "combo-casal",
+        name: "Combo Casal",
+        description: "2x Copo 500ml com complementos à escolha de cada um. Economize!",
+        price: 33.0,
         image: copo500,
+        badge: "🔥 Promo",
         groups: [frutasGroup(3, 2), complementosGroup(4), caldasGroup, premiumGroup],
       },
       {
-        id: "copo-700",
-        name: "Copo 700ml",
-        description: "Pra dividir? Açaí + 5 complementos + 3 frutas + 2 caldas.",
-        price: 22.0,
-        image: copo700,
-        groups: [frutasGroup(4, 3), complementosGroup(5), caldasGroup, premiumGroup],
-      },
-      {
-        id: "copo-1kg",
-        name: "Copo 1KG",
-        description: "Pra família! Açaí + 6 complementos + 4 frutas + 2 caldas.",
-        price: 39.99,
+        id: "combo-familia",
+        name: "Combo Família",
+        description: "1x Copo 1kg + 2x Copo 300ml. Ideal para grupos!",
+        price: 59.9,
         image: copo1kg,
         badge: "Família",
         groups: [frutasGroup(5, 4), complementosGroup(6), caldasGroup, premiumGroup],
@@ -151,7 +163,7 @@ export const categories: Category[] = [
   {
     id: "milkshakes",
     title: "Milkshakes",
-    emoji: "🥤",
+    emoji: "🥛",
     items: [
       {
         id: "milk-acai",
@@ -162,7 +174,7 @@ export const categories: Category[] = [
         groups: [
           {
             id: "calda-milk",
-            title: "Calda (1)",
+            title: "Calda (obrigatório)",
             required: true,
             min: 1,
             max: 1,
@@ -183,6 +195,37 @@ export const categories: Category[] = [
             ],
           },
         ],
+      },
+    ],
+  },
+  {
+    id: "adicionais",
+    title: "Adicionais Avulsos",
+    emoji: "🍓",
+    items: [
+      {
+        id: "add-nutella",
+        name: "Nutella Extra",
+        description: "Porção extra de Nutella para complementar seu açaí.",
+        price: 4.0,
+        image: copo300,
+        groups: [],
+      },
+      {
+        id: "add-granola",
+        name: "Granola Extra",
+        description: "Granola crocante, para turbinar qualquer pedido.",
+        price: 2.0,
+        image: copo300,
+        groups: [],
+      },
+      {
+        id: "add-ninho",
+        name: "Creme de Ninho Extra",
+        description: "Creme de Ninho para deixar tudo mais cremoso.",
+        price: 4.0,
+        image: copo300,
+        groups: [],
       },
     ],
   },

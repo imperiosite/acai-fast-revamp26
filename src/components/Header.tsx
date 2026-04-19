@@ -99,6 +99,15 @@ export function Header() {
                 <span className="text-muted-foreground">Mín.</span>
                 <span className="font-semibold">{formatBRL(STORE.minOrder)}</span>
               </div>
+              <a
+                href={`https://wa.me/${STORE.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#25D366]/15 border border-[#25D366]/40 text-[#25D366] font-semibold hover:bg-[#25D366]/25 transition-smooth text-xs"
+              >
+                <span>💬</span>
+                <span>WhatsApp</span>
+              </a>
             </div>
           </div>
         </div>
