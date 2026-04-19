@@ -5,17 +5,8 @@ import { Menu } from "@/components/Menu";
 import { CartDrawer } from "@/components/CartDrawer";
 import { DemoBanner } from "@/components/DemoBanner";
 import { Toaster } from "@/components/ui/sonner";
-import { STORE } from "@/data/menu";
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: `${STORE.name} — Cardápio Digital | ${STORE.tagline}` },
-      { name: "description", content: `Cardápio digital premium do ${STORE.name}. Açaí artesanal, milkshakes e adicionais especiais.` },
-      { property: "og:title", content: `${STORE.name} — Cardápio Digital` },
-      { property: "og:description", content: "Experiência premium em delivery de açaí." },
-    ],
-  }),
   component: Index,
 });
 
