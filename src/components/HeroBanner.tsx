@@ -3,6 +3,7 @@ import { useCart } from "@/store/cart";
 
 export function HeroBanner() {
   const setOpen = useCart((s) => s.setOpen);
+  void setOpen; // suppress unused warning
 
   return (
     <section className="relative overflow-hidden mx-4 my-6 rounded-2xl shadow-elevated">
@@ -30,7 +31,7 @@ export function HeroBanner() {
         </p>
         <button
           onClick={() => {
-            const el = document.getElementById("cat-copos");
+            const el = document.getElementById("cat-mais-pedidos");
             el?.scrollIntoView({ behavior: "smooth" });
           }}
           className="inline-flex items-center gap-2 bg-gradient-gold text-accent-foreground font-bold px-6 py-3 rounded-full shadow-gold hover:opacity-90 transition-smooth text-sm"

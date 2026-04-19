@@ -7,7 +7,7 @@ import { DemoBanner } from "@/components/DemoBanner";
 import { Toaster } from "@/components/ui/sonner";
 import { STORE } from "@/data/menu";
 
-export const Route = createFileRoute("/")(({
+export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: `${STORE.name} — Cardápio Digital | ${STORE.tagline}` },
@@ -17,7 +17,7 @@ export const Route = createFileRoute("/")(({
     ],
   }),
   component: Index,
-}));
+});
 
 function Index() {
   return (
