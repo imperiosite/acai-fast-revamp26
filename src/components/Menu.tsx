@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState, useTransition } from "react";
 import { Search, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -11,14 +11,18 @@ export function Menu() {
   const [query, setQuery] = useState("");
   const [activeCat, setActiveCat] = useState(categories[0].id);
   const [selected, setSelected] = useState<MenuItem | null>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return categories.map((c) => ({
-      ...c,
-      items: q ? c.items.filter((i) => i.name.toLowerCase().includes(q)) : c.items,
-    }));
-  }, [query]);
+  const filtered = categories.map((c) => ({
+    ...c,
+    items: query.trim()
+      ? c.items.filter((i) => i.name.toLowerCase().includes(query.trim().toLowerCase()))
+      : c.items,
+  }));
+
+  const handleSelect = (item: MenuItem) => {
+    startTransition(() => setSelected(item));
+  };
 
   return (
     <section className="max-w-3xl mx-auto px-4 pb-32">
@@ -57,12 +61,8 @@ export function Menu() {
       {filtered.map((cat) => (
         <div key={cat.id} id={`cat-${cat.id}`} className="pt-10 scroll-mt-32">
           <div className="text-center mb-6">
-            <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold mb-2">
-              {cat.emoji} Categoria
-            </p>
-            <h2 className="text-3xl md:text-4xl font-display font-medium">
-              {cat.title}
-            </h2>
+            <p className="text-[0.65rem] uppercase tracking-[0.4em] text-gold mb-2">{cat.emoji} Categoria</p>
+            <h2 className="text-3xl md:text-4xl font-display font-medium">{cat.title}</h2>
             <div className="divider-gold w-24 mx-auto mt-3">
               <span className="text-gold text-xs">✦</span>
             </div>
@@ -75,8 +75,9 @@ export function Menu() {
               {cat.items.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => setSelected(item)}
-                  className="group w-full text-left bg-gradient-card rounded-xl overflow-hidden border border-border/50 hover:border-gold/40 shadow-card hover:shadow-elevated transition-smooth flex gap-4 p-3"
+                  onClick={() => handleSelect(item)}
+                  disabled={isPending}
+                  className="group w-full text-left bg-gradient-card rounded-xl overflow-hidden border border-border/50 hover:border-gold/40 shadow-card hover:shadow-elevated transition-smooth flex gap-4 p-3 disabled:opacity-70"
                 >
                   <div className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0 rounded-lg overflow-hidden">
                     <img
@@ -94,17 +95,11 @@ export function Menu() {
 
                   <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
                     <div>
-                      <h3 className="font-display text-lg sm:text-xl font-medium leading-tight">
-                        {item.name}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mt-1 leading-relaxed">
-                        {item.description}
-                      </p>
+                      <h3 className="font-display text-lg sm:text-xl font-medium leading-tight">{item.name}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 mt-1 leading-relaxed">{item.description}</p>
                     </div>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-base sm:text-lg font-display font-medium text-gold">
-                        {formatBRL(item.price)}
-                      </span>
+                      <span className="text-base sm:text-lg font-display font-medium text-gold">{formatBRL(item.price)}</span>
                       <span className="flex items-center gap-1 text-[0.7rem] uppercase tracking-wider px-3 py-1.5 rounded-full border border-gold/40 text-gold group-hover:bg-gradient-gold group-hover:text-accent-foreground group-hover:border-transparent transition-smooth font-semibold">
                         <Plus className="h-3 w-3" />
                         Pedir
