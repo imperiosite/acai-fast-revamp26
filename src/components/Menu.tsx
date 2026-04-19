@@ -1,4 +1,4 @@
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { Search, Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -11,7 +11,6 @@ export function Menu() {
   const [query, setQuery] = useState("");
   const [activeCat, setActiveCat] = useState(categories[0].id);
   const [selected, setSelected] = useState<MenuItem | null>(null);
-  const [isPending, startTransition] = useTransition();
 
   const filtered = categories.map((c) => ({
     ...c,
@@ -19,10 +18,6 @@ export function Menu() {
       ? c.items.filter((i) => i.name.toLowerCase().includes(query.trim().toLowerCase()))
       : c.items,
   }));
-
-  const handleSelect = (item: MenuItem) => {
-    startTransition(() => setSelected(item));
-  };
 
   return (
     <section className="max-w-3xl mx-auto px-4 pb-32">
@@ -75,9 +70,8 @@ export function Menu() {
               {cat.items.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleSelect(item)}
-                  disabled={isPending}
-                  className="group w-full text-left bg-gradient-card rounded-xl overflow-hidden border border-border/50 hover:border-gold/40 shadow-card hover:shadow-elevated transition-smooth flex gap-4 p-3 disabled:opacity-70"
+                  onClick={() => setSelected(item)}
+                  className="group w-full text-left bg-gradient-card rounded-xl overflow-hidden border border-border/50 hover:border-gold/40 shadow-card hover:shadow-elevated transition-smooth flex gap-4 p-3"
                 >
                   <div className="relative h-24 w-24 sm:h-28 sm:w-28 shrink-0 rounded-lg overflow-hidden">
                     <img
