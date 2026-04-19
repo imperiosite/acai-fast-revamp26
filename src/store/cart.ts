@@ -53,7 +53,6 @@ export const useCart = create<CartState>((set, get) => ({
   addLine: (line) =>
     set((s) => ({
       lines: [...s.lines, { ...line, lineId: crypto.randomUUID() }],
-      open: true,
     })),
   updateLine: (lineId, patch) =>
     set((s) => ({
