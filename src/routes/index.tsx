@@ -5,6 +5,7 @@ import { Menu } from "@/components/Menu";
 import { CartDrawer } from "@/components/CartDrawer";
 import { DemoBanner } from "@/components/DemoBanner";
 import { Toaster } from "@/components/ui/sonner";
+import { STORE } from "@/data/menu";
 
 export const Route = createFileRoute("/")({
   component: Index,
